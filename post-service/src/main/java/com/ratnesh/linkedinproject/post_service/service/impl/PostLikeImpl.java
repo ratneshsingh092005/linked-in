@@ -1,6 +1,6 @@
 package com.ratnesh.linkedinproject.post_service.service.impl;
 
-import com.ratnesh.linkedinproject.post_service.entity.Post;
+import com.ratnesh.linkedinproject.post_service.auth.AuthContextHolder;
 import com.ratnesh.linkedinproject.post_service.entity.PostLike;
 import com.ratnesh.linkedinproject.post_service.exceptions.BadRequestException;
 import com.ratnesh.linkedinproject.post_service.exceptions.ResourceNotFoundException;
@@ -16,9 +16,10 @@ import org.springframework.stereotype.Service;
 public class PostLikeImpl implements PostLikeService {
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
+
     @Override
     public void likePost(Long postId) {
-        Long userId = 1L;
+        Long userId = AuthContextHolder.getCurrentUserId();
          postRepository.findById(postId).orElseThrow(()-> new ResourceNotFoundException("post",postId.toString()));
 
         boolean alreadyLiked = postLikeRepository.existsByUserIdAndPostId(userId,postId);
@@ -37,8 +38,8 @@ public class PostLikeImpl implements PostLikeService {
     @Transactional
     @Override
     public void unlikePost(Long postId) {
+        Long userId = AuthContextHolder.getCurrentUserId();
 
-        Long userId = 1L;
         postRepository.findById(postId).orElseThrow(()-> new ResourceNotFoundException("post",postId.toString()));
 
         boolean liked = postLikeRepository.existsByUserIdAndPostId(userId,postId);

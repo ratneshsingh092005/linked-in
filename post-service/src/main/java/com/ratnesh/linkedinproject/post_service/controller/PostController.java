@@ -1,10 +1,9 @@
 package com.ratnesh.linkedinproject.post_service.controller;
 
+import com.ratnesh.linkedinproject.post_service.auth.AuthContextHolder;
 import com.ratnesh.linkedinproject.post_service.dto.PostCreateRequestDto;
 import com.ratnesh.linkedinproject.post_service.dto.PostDto;
 import com.ratnesh.linkedinproject.post_service.service.PostService;
-import com.ratnesh.linkedinproject.post_service.service.impl.PostServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,9 +22,9 @@ public class PostController {
     PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postCreateRequestDto,
-                                              HttpServletRequest httpServletRequest){
-        PostDto postDto = postService.createPost(postCreateRequestDto,1L);
+    public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postCreateRequestDto
+                                             ) {
+        PostDto postDto = postService.createPost(postCreateRequestDto);
         return  ResponseEntity.status(HttpStatus.CREATED).body(postDto);
     }
 
